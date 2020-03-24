@@ -13,14 +13,16 @@ void JsonRequestController::request(int type, QString endPoint, QString apiKey, 
     QNetworkRequest request;
     QNetworkReply *response;
 
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
     request.setRawHeader(QByteArray("ApiKey"), QByteArray(apiKey.toUtf8()));
     request.setRawHeader(QByteArray("User-Agent"), QByteArray("Pankkiautomaatti"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded"));
 
     qDebug() << "Initializing request with params: " << type << ", " << endPoint << ", " << apiKey << ", " << params << endl;
 
     // type 1 == GET, 2 == POST
     if(type == 1){
-        request.setUrl(QUrl(endPoint));
+        request.setUrl(QUrl(endPoint + QString("?") + params));
 
         response = this->requestManager->get(request);
 
@@ -31,7 +33,7 @@ void JsonRequestController::request(int type, QString endPoint, QString apiKey, 
     }else if(type == 2){
         request.setUrl(QUrl(endPoint));
 
-        response = this->requestManager->get(request);
+        response = this->requestManager->post(request, QByteArray(params.toUtf8()));
 
         qDebug() << "POST request sent, waiting for response" << endl;
 
