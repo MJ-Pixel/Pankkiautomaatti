@@ -1,7 +1,7 @@
+/*
 #include "dllmysql.h"
 #include "C:\Users\Hadis\Documents\Qt\Olio-ohjelmoinnin_jatkokurssi\MyDLL\mydll.h"
 
-/*
 void DLLMySQL::connectToDb()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("MYSQL");
@@ -21,7 +21,6 @@ void DLLMySQL::connectToDb()
         qDebug() << db.lastError().text();
     }
 }
-*/
 
 bool DLLMySQL::connectToDb()
 {
@@ -49,3 +48,4 @@ int DLLMySQL::test()
 {
     return (1+1);
 }
+*/
