@@ -7,6 +7,7 @@
 #include <QtSql>
 #include <QString>
 #include <QSqlQuery>
+#include <QVector>
 
 using namespace std;
 
@@ -23,23 +24,26 @@ public:
         QString message;
         QString reference;
     };
-    static QSqlDatabase& connectToDb();
-    static QSqlDatabase& login(int cardid, QString pin);
-    //static bool login(int cardid, int pin);
-    static QSqlDatabase& withdraw(double amount);
-    static QSqlDatabase& payment(PaymentInfo info);
-    //static QSqlDatabase& events(QDate dateStart, QDate dateEnd);
-    static QSqlDatabase& events();
-    static QSqlDatabase& balance();
+    static bool connectToDb();
+    static bool login(int cardid, QString pin);
+    static bool withdraw(double amount);
+    static bool payment(PaymentInfo info);
+    static void specificEvents(QString dateStart, QString dateEnd);
+    static QVector<QString> events();
+    static QString balance();
+    static void test();
 
 private:
     static int id;
+    static QString my_format;
 };
 
 int DLLMySQL::id = 0;
 
-QSqlDatabase& DLLMySQL::connectToDb()
+bool DLLMySQL::connectToDb()
 {
+    bool result = false;
+
     QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("mysli.oamk.fi");
@@ -50,15 +54,18 @@ QSqlDatabase& DLLMySQL::connectToDb()
 
     if(db.open()){
         qDebug() << "Connection to database open";
+        result = true;
     } else {
         qDebug() << "Driver in use: " + db.driverName();
         qDebug() << "Couldn't open connection to database";
         qDebug() << db.lastError().text();
     }
+    return result;
 }
 
-QSqlDatabase& DLLMySQL::login(int cardid, QString pin)
+bool DLLMySQL::login(int cardid, QString pin)
 {
+    bool result = false;
     if (QSqlDatabase::contains()){
         QSqlDatabase db = QSqlDatabase::database("MyDbConnection");
         QSqlQuery query;
@@ -69,14 +76,17 @@ QSqlDatabase& DLLMySQL::login(int cardid, QString pin)
         if (query.size() > 0){
             qDebug() << "User found";
             id = cardid;
+            result = true;
         } else {
             qDebug() << "User not found";
         }
     }
+    return result;
 }
 
-QSqlDatabase& DLLMySQL::withdraw(double amount)
+bool DLLMySQL::withdraw(double amount)
 {
+    bool result = false;
     if (QSqlDatabase::contains()){
         QSqlDatabase db = QSqlDatabase::database("MyDbConnection");
         QSqlQuery query;
@@ -95,7 +105,8 @@ QSqlDatabase& DLLMySQL::withdraw(double amount)
                 query.addBindValue(math);
                 query.addBindValue(id);
                 if(query.exec()){
-                    qDebug() << "Withdraw completed successfully";
+                    query.prepare("INSERT INTO tilitapahtumat (user_id, tyyppi, nimi, iban, bicc, summa, viite, viesti) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    result = true;
                 } else {
                     qDebug() << "Withdraw failed";
                 }
@@ -106,10 +117,13 @@ QSqlDatabase& DLLMySQL::withdraw(double amount)
     } else {
         qDebug() << "Couldn't connect to database";
     }
+    return result;
 }
 
-QSqlDatabase &DLLMySQL::payment(DLLMySQL::PaymentInfo info)
+bool DLLMySQL::payment(DLLMySQL::PaymentInfo info)
 {
+
+    bool result = false;
 
     qDebug() << info.type << info.amount << info.name<< info.iban << info.bicc << info.message << info.reference;
 
@@ -144,6 +158,7 @@ QSqlDatabase &DLLMySQL::payment(DLLMySQL::PaymentInfo info)
                     query.addBindValue(info.message);
                     if(query.exec()){
                         qDebug() << "Payment information inserted successfully";
+                        result = true;
                     } else {
                         qDebug() << "Inserting payment information failed";
                     }
@@ -153,39 +168,65 @@ QSqlDatabase &DLLMySQL::payment(DLLMySQL::PaymentInfo info)
             }
         }
     }
+    return result;
 }
 
-QSqlDatabase &DLLMySQL::events()
+void DLLMySQL::specificEvents(QString dateStart, QString dateEnd)
 {
     int index = 0;
     QDebug deb = qDebug();
+    qDebug() << "Results for events between dates " << dateStart << " and" << dateEnd;
     if (QSqlDatabase::contains()){
         QSqlDatabase db = QSqlDatabase::database("MyDbConnection");
         QSqlQuery query;
-
-        for(int i = 0; i < 11; i++){
-            query.prepare("SELECT * FROM tilitapahtumat WHERE user_id = ? ORDER BY tapahtuma_id DESC LIMIT 1 OFFSET ?");
-            query.addBindValue(id);
-            query.addBindValue(i);
-            query.exec();
-            QSqlRecord rec = query.record();
-            while(query.next()){
-                for(int j = 0; j < rec.count(); j++){
-                    deb << query.value(j).toString();
-                    if(index == 9){
-                        deb << endl;
-                        index = 0;
-                    } else {
-                        index++;
-                    }
+        query.prepare("SELECT * FROM tilitapahtumat WHERE user_id = ? AND time BETWEEN ? AND ? ORDER BY tapahtuma_id DESC");
+        query.addBindValue(id);
+        query.addBindValue(dateStart);
+        query.addBindValue(dateEnd);
+        query.exec();
+        QSqlRecord rec = query.record();
+        while(query.next()){
+            for(int i = 0; i < rec.count(); i++){
+                deb << query.value(i).toString();
+                if(index == 9){
+                    deb << endl;
+                    index = 0;
+                } else {
+                    index++;
                 }
             }
         }
     }
 }
 
-QSqlDatabase &DLLMySQL::balance()
+QVector<QString> DLLMySQL::events()
 {
+    qDebug() << "Results for last 10 events:";
+    QVector<QString> stringVector;
+    QDebug deb = qDebug();
+    if (QSqlDatabase::contains()){
+        QSqlDatabase db = QSqlDatabase::database("MyDbConnection");
+        QSqlQuery query;
+        query.prepare("SELECT * FROM tilitapahtumat WHERE user_id = ? ORDER BY tapahtuma_id DESC LIMIT 10");
+        query.addBindValue(id);
+        query.exec();
+        QSqlRecord rec = query.record();
+        while(query.next()){
+            for(int j = 0; j < rec.count(); j++){
+                deb << query.value(j).toString();
+                stringVector.append(query.value(j).toString());
+                if(j != 0 && j % 9 == 0){
+                    deb << endl;
+                }
+            }
+        }
+    }
+    return stringVector;
+}
+
+QString DLLMySQL::balance()
+{
+    QString result = "";
     if (QSqlDatabase::contains()){
         QSqlDatabase db = QSqlDatabase::database("MyDbConnection");
         QSqlQuery query;
@@ -197,10 +238,17 @@ QSqlDatabase &DLLMySQL::balance()
             qDebug() << "Found user's balance in balance()";
             double balance = query.value(0).toDouble();
             qDebug() << "User's balance is: " << balance << " euro(s)";
+            result = QString::number(balance);
         } else {
             qDebug() << "Couldn't connect to database";
         }
     }
+    return result;
+}
+
+void DLLMySQL::test()
+{
+    qDebug() << "test";
 }
 
 
