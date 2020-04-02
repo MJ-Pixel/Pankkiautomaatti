@@ -28,7 +28,7 @@ public:
     static bool login(int cardid, QString pin);
     static bool withdraw(double amount);
     static bool payment(PaymentInfo info);
-    static void specificEvents(QString dateStart, QString dateEnd);
+    static QVector<QString> specificEvents(QString dateStart, QString dateEnd);
     static QVector<QString> events();
     static QString balance();
     static void test();
@@ -171,10 +171,10 @@ bool DLLMySQL::payment(DLLMySQL::PaymentInfo info)
     return result;
 }
 
-void DLLMySQL::specificEvents(QString dateStart, QString dateEnd)
+QVector<QString> DLLMySQL::specificEvents(QString dateStart, QString dateEnd)
 {
-    int index = 0;
     QDebug deb = qDebug();
+    QVector<QString> stringVector;
     qDebug() << "Results for events between dates " << dateStart << " and" << dateEnd;
     if (QSqlDatabase::contains()){
         QSqlDatabase db = QSqlDatabase::database("MyDbConnection");
@@ -188,15 +188,14 @@ void DLLMySQL::specificEvents(QString dateStart, QString dateEnd)
         while(query.next()){
             for(int i = 0; i < rec.count(); i++){
                 deb << query.value(i).toString();
-                if(index == 9){
+                stringVector.append(query.value(i).toString());
+                if(i != 0 && i % 9 == 0){
                     deb << endl;
-                    index = 0;
-                } else {
-                    index++;
                 }
             }
         }
     }
+    return stringVector;
 }
 
 QVector<QString> DLLMySQL::events()
@@ -212,10 +211,10 @@ QVector<QString> DLLMySQL::events()
         query.exec();
         QSqlRecord rec = query.record();
         while(query.next()){
-            for(int j = 0; j < rec.count(); j++){
-                deb << query.value(j).toString();
-                stringVector.append(query.value(j).toString());
-                if(j != 0 && j % 9 == 0){
+            for(int i = 0; i < rec.count(); i++){
+                deb << query.value(i).toString();
+                stringVector.append(query.value(i).toString());
+                if(i != 0 && i % 9 == 0){
                     deb << endl;
                 }
             }
