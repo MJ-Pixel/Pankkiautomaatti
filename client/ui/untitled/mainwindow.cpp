@@ -6,11 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    PaymentScreenOff();
-    BalanceScreenOff();
-    WithdrawScreenOff();
-    MainScreenOff();
-    LoginScreenOn();
+    LoginScreen();
+    SetBalance();
     login = false;
 }
 
@@ -19,78 +16,38 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::MainScreenOn()
+void MainWindow::MainScreen()
 {
-    ui->main_welcome_label->setText("Welcome!");
-    ui->main_balance_button->setVisible(true);
-    ui->main_payment_button->setVisible(true);
-    ui->main_withdraw_button->setVisible(true);
-    ui->main_transaction_button->setVisible(true);
-    balanceTimer = 3;
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
-void MainWindow::MainScreenOff()
+void MainWindow::PaymentScreen()
 {
-    ui->main_balance_button->setVisible(false);
-    ui->main_payment_button->setVisible(false);
-    ui->main_withdraw_button->setVisible(false);
-    ui->main_transaction_button->setVisible(false);
-}
-void MainWindow::PaymentScreenOn()
-{
-    ui->main_welcome_label->setText("Payment");
-    ui->payment_back_button->setVisible(true);
-    ui->payment_sum_line->setVisible(true);
-    ui->payment_name_line->setVisible(true);
-    ui->payment_accnum_line->setVisible(true);
-    ui->payment_sum_label->setVisible(true);
-    ui->payment_name_label->setVisible(true);
-    ui->payment_accnum_label->setVisible(true);
-    ui->payment_confirm_button->setVisible(true);
+    ui->stackedWidget->setCurrentIndex(4);
 }
 
-void MainWindow::PaymentScreenOff()
+void MainWindow::LoginScreen()
 {
-    ui->payment_back_button->setVisible(false);
-    ui->payment_sum_line->setVisible(false);
-    ui->payment_name_line->setVisible(false);
-    ui->payment_accnum_line->setVisible(false);
-    ui->payment_sum_label->setVisible(false);
-    ui->payment_name_label->setVisible(false);
-    ui->payment_accnum_label->setVisible(false);
-    ui->payment_confirm_button->setVisible(false);
+    ui->stackedWidget->setCurrentIndex(2);
 }
 
-void MainWindow::BalanceScreenOn()
+void MainWindow::BalanceScreen()
 {
-    ui->main_welcome_label->setText("Balance");
-    ui->balance_usable_label->setVisible(true);
-    ui->balance_ammount_label->setVisible(true);
-    ui->balance_balance_label->setVisible(true);
-    ui->balance_ammount_label_2->setVisible(true);
-    ui->balance_back_button->setVisible(true);
+    ui->stackedWidget->setCurrentIndex(1);
 }
 
-void MainWindow::BalanceScreenOff()
+void MainWindow::WithdrawScreen()
 {
-    ui->balance_usable_label->setVisible(false);
-    ui->balance_ammount_label->setVisible(false);
-    ui->balance_balance_label->setVisible(false);
-    ui->balance_ammount_label_2->setVisible(false);
-    ui->balance_back_button->setVisible(false);
+    ui->stackedWidget->setCurrentIndex(3);
 }
-
 void MainWindow::on_main_payment_button_clicked()
 {
-    MainScreenOff();
-    PaymentScreenOn();
-
+    PaymentScreen();
 }
 
 void MainWindow::on_payment_back_button_clicked()
 {
-    MainScreenOn();
-    PaymentScreenOff();
+    MainScreen();
 }
 
 void MainWindow::on_payment_confirm_button_clicked()
@@ -108,8 +65,7 @@ void MainWindow::on_payment_confirm_button_clicked()
     if(msg.clickedButton() == confirmButton){
         msg.removeButton(noButton);
         msg.removeButton(confirmButton);
-        MainScreenOn();
-        PaymentScreenOff();
+        MainScreen();
     }else if(msg.clickedButton() == noButton){
         msg.removeButton(noButton);
         msg.removeButton(confirmButton);
@@ -118,8 +74,7 @@ void MainWindow::on_payment_confirm_button_clicked()
 
 void MainWindow::on_main_balance_button_clicked()
 {
-    MainScreenOff();
-    BalanceScreenOn();
+    BalanceScreen();
     balanceTimer = 100;
     SetBalance();
     //BalanceTimer(); //ei toimi vielä, ei varmaan voi looppeja käyttää tai jotain...
@@ -128,8 +83,7 @@ void MainWindow::on_main_balance_button_clicked()
 
 void MainWindow::on_balance_back_button_clicked()
 {
-    BalanceScreenOff();
-    MainScreenOn();
+    MainScreen();
     balanceTimer = 0;
 }
 
@@ -138,8 +92,7 @@ void MainWindow::BalanceTimer()
 
     for(int i = balanceTimer; i > 0; i--)
     {
-        MainScreenOn();
-        BalanceScreenOff();
+        MainScreen();
     }
 
     //MainScreenOn();
@@ -147,41 +100,14 @@ void MainWindow::BalanceTimer()
     //balanceScreen = false;
 }
 
-void MainWindow::WithdrawScreenOn()
-{
-    ui->main_welcome_label->setText("Withdraw");
-    ui->withdraw_back_button->setVisible(true);
-    ui->withdraw_ammount_line->setVisible(true);
-    ui->withdraw_ammount_label->setVisible(true);
-    ui->withdraw_confirm_button->setVisible(true);
-    ui->balance_usable_label->setVisible(true);
-    ui->balance_balance_label->setVisible(true);
-    ui->balance_ammount_label->setVisible(true);
-    ui->balance_ammount_label_2->setVisible(true);
-}
-
-void MainWindow::WithdrawScreenOff()
-{
-    ui->withdraw_back_button->setVisible(false);
-    ui->withdraw_ammount_line->setVisible(false);
-    ui->withdraw_ammount_label->setVisible(false);
-    ui->withdraw_confirm_button->setVisible(false);
-    ui->balance_usable_label->setVisible(false);
-    ui->balance_balance_label->setVisible(false);
-    ui->balance_ammount_label->setVisible(false);
-    ui->balance_ammount_label_2->setVisible(false);
-}
-
 void MainWindow::on_main_withdraw_button_clicked()
 {
-    WithdrawScreenOn();
-    MainScreenOff();
+    WithdrawScreen();
 }
 
 void MainWindow::on_withdraw_back_button_clicked()
 {
-    WithdrawScreenOff();
-    MainScreenOn();
+    MainScreen();
 }
 
 void MainWindow::on_withdraw_confirm_button_clicked()
@@ -197,8 +123,7 @@ void MainWindow::on_withdraw_confirm_button_clicked()
     if(msg.clickedButton() == confirmButton){
         msg.removeButton(noButton);
         msg.removeButton(confirmButton);
-        MainScreenOn();
-        WithdrawScreenOff();
+        MainScreen();
     }else if(msg.clickedButton() == noButton){
         msg.removeButton(noButton);
         msg.removeButton(confirmButton);
@@ -209,39 +134,23 @@ void MainWindow::SetBalance()
 {
     ui->balance_ammount_label->setText(balanceAmmount);
     ui->balance_ammount_label_2->setText(balanceAmmount);
+    ui->withdraw_ammount_label_2->setText(balanceAmmount);
 }
 
 void MainWindow::on_login_login_button_clicked()
 {
-    //login = true;
+    login = true;
     LoginCheck();
 }
 
 void MainWindow::LoginCheck()
 {
     if(login == true){
-        MainScreenOn();
-        LoginScreenOff();
+        MainScreen();
     }
 }
 
-void MainWindow::LoginScreenOn()
+void MainWindow::on_main_transaction_button_clicked()
 {
-    ui->main_welcome_label->setText("Login");
-    ui->login_username_line->setVisible(true);
-    ui->login_password_label->setVisible(true);
-    ui->login_username_label->setVisible(true);
-    ui->login_password_line->setVisible(true);
-    ui->login_login_button->setVisible(true);
+
 }
-
-void MainWindow::LoginScreenOff()
-{
-    ui->login_username_line->setVisible(false);
-    ui->login_password_label->setVisible(false);
-    ui->login_username_label->setVisible(false);
-    ui->login_password_line->setVisible(false);
-    ui->login_login_button->setVisible(false);
-}
-
-

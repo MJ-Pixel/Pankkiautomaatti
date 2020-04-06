@@ -17,18 +17,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void MainScreenOn();
-    void MainScreenOff();
-    void PaymentScreenOn();
-    void PaymentScreenOff();
-    void BalanceScreenOn();
-    void BalanceScreenOff();
-    void WithdrawScreenOn();
-    void WithdrawScreenOff();
+
+    void MainScreen();
+    void PaymentScreen();
+    void LoginScreen();
+    void BalanceScreen();
+    void WithdrawScreen();
     //Transactioniin voi luoda labeleita dynaamisesti seuraavanlailla
     //QLabel *label = new QLabel(<meijan info>, this);
-    void LoginScreenOn();
-    void LoginScreenOff();
 
     bool login = false;
 private slots:
@@ -53,6 +49,8 @@ private slots:
     void on_withdraw_confirm_button_clicked();
 
     void on_login_login_button_clicked();
+
+    void on_main_transaction_button_clicked();
 
 private:
     Ui::MainWindow *ui;
