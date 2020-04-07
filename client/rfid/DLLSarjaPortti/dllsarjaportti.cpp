@@ -31,31 +31,24 @@ QString DLLSarjaPortti::simulateCard()
     return "0B0035CD90";
 }
 
-QString DLLSarjaPortti::writeData()
+void DLLSarjaPortti::writeData()
 {
     char data[20];
     int bytesRead;
     bytesRead = serial->read(data,20);
     data[bytesRead] = '\0';
-            if (bytesRead>10)
-            {
-                for (int i=0;i<=9;i++)
-                {
-                    cardID = data;
-                }
-                cardID.remove(0,3);
-               // cardID = cardID.trimmed();
-                qDebug () << "CardID:" << cardID << endl;
-            }
-            else
-                qDebug () << "Reading card error" << endl;
 
-
-            return cardID;
+    if (bytesRead>10)
+    {
+        for (int i=0;i<=9;i++)
+        {
+            cardID = data;
+        }
+        cardID.remove(0,3);
+       // cardID = cardID.trimmed();
+        qDebug () << "CardID:" << cardID << endl;
+        emit readComplete(QString(cardID));
+    }else{
+        qDebug () << "Reading card error" << endl;
+    }
 }
-
-void DLLSarjaPortti::bSignal()
-{
-    emit aSignal();
-}
-

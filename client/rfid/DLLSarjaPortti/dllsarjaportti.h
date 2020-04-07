@@ -20,10 +20,10 @@ private:
     QString returnCardID;
     QSerialPort *serial;
 signals:
-    void DLLSARJAPORTTISHARED_EXPORT aSignal();
+    void DLLSARJAPORTTISHARED_EXPORT readComplete(QString id);
 public slots:
-    QString writeData();
-    void DLLSARJAPORTTISHARED_EXPORT bSignal();
+    void writeData();
+
 };
 
 #endif // DLLSARJAPORTTI_H
