@@ -26,6 +26,11 @@ void DLLSarjaPortti::readCard()
 
 }
 
+QString DLLSarjaPortti::simulateCard()
+{
+    return "0B0035CD90";
+}
+
 QString DLLSarjaPortti::writeData()
 {
     char data[20];
