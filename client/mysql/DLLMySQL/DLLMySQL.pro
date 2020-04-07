@@ -1,4 +1,4 @@
-QT -= gui
+QT -= gui console
 QT += core sql
 
 TARGET = DLLMySQL
@@ -7,12 +7,11 @@ TEMPLATE = lib
 
 DEFINES += DLLMYSQL_LIBRARY
 
-SOURCES +=
+SOURCES += \
+    dllmysql.cpp
 
 HEADERS += \
     DLLMySQL_global.h \
     dllmysql.h
 
-SOURCES +=
-
-DESTDIR = "D:\OAMK\Jakso 4\Qt\Olio-ohjelmoinnin_jatkokurssi\Exec"
+DESTDIR = "C:\BankSimul\exe"

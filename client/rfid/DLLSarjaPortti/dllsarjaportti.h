@@ -14,6 +14,7 @@ class DLLSARJAPORTTISHARED_EXPORT DLLSarjaPortti : public QObject
 public:
    // DLLSarjaPortti();
     void DLLSARJAPORTTISHARED_EXPORT readCard();
+    static QString DLLSARJAPORTTISHARED_EXPORT simulateCard();
 private:
     QString cardID;
     QString returnCardID;

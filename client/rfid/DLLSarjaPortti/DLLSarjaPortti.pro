@@ -33,3 +33,5 @@ unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+
+DESTDIR += C:\BankSimul\exe
