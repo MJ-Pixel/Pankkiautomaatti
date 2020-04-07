@@ -26,6 +26,9 @@ void MainWindow::on_writeCardBtn_clicked()
         }else{
             ui->writerLog->appendPlainText("Writer waiting, insert card");
             ui->writeCardBtn->setDisabled(1);
+
+            // here it should go to a thread which waits the rfid card for writing, but it seems that our
+            // hardware does not support writing, so this program remains as a proof of consept
         }
 
     }
@@ -37,9 +40,9 @@ void MainWindow::on_searchBtn_clicked()
         ui->writerLog->appendPlainText("FETCH ERROR: Input at least 3 characters");
     }else{
         ui->searchBtn->setText("...");
-        ui->searchBtn->setDisabled(1);
+        ui->searchBtn->setDisabled(true);
         ui->writerLog->appendPlainText("Searching from database");
-
+        this->repaint();
         // sql connection and search
         QSqlDatabase db;
         db = QSqlDatabase::addDatabase("QMYSQL");
@@ -57,8 +60,8 @@ void MainWindow::on_searchBtn_clicked()
         }
 
         QSqlQuery query;
-        query.prepare("SELECT user_id FROM tilitiedot WHERE user_first LIKE ':param'% OR user_last LIKE ':param'%");
-        query.bindValue(":param", ui->search->text());
+        query.prepare("SELECT * FROM tilitiedot WHERE user_first LIKE :param OR user_last LIKE :param");
+        query.bindValue(":param", "%"+ui->search->text()+"%");
         query.exec();
 
         if(query.size() == 0){
@@ -68,12 +71,11 @@ void MainWindow::on_searchBtn_clicked()
             return;
         }
 
-        while(query.next()){
-            ui->writerLog->appendPlainText("FOUND");
-        }
+        ui->searchResults->clear();
 
-        ui->searchResults->addItem("Etu Suku: 12591383192");
-        ui->searchResults->addItem("Etu2 Suku2: 125935353192");
+        while(query.next()){
+            ui->searchResults->addItem(QString(query.value(1).toString()) + " " + QString(query.value(2).toString()) + ": "+query.value(0).toString());
+        }
 
         ui->searchBtn->setText("Search");
         ui->searchBtn->setDisabled(0);
