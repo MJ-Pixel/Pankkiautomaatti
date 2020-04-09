@@ -7,6 +7,7 @@
 #include <QDialog>
 #include <vector>
 #include <QTime>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,7 +21,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void MainScreen();
+    void ButtonMadness();
+
+    void EnablePayment(); //enable and disable funktions are used to enable and disable the corresbonding buttons.
+    void DisablePayment();
+    void EnableBalance();
+    void DisableBalance();
+    void EnableWithdraw();
+    void DisableWithdraw();
+
+    void MainScreen(); //theese functions will chang the screen
     void PaymentScreen();
     void LoginScreen();
     void BalanceScreen();
@@ -83,6 +93,13 @@ private:
     void ClearPayment();
     void ClearWithdraw();
     void ErrorMessage();
+
+    bool randomiser = false;
+
+    bool firstNumber = false;
+    bool secondNumber = false;
+    bool thirdNumber = false;
+    bool fourthNumber = false;
 
     QString balanceAmmount = "100";
     QVector<QWidget *> vec;

@@ -47,6 +47,9 @@ void MainWindow::on_main_payment_button_clicked()
 {
     ClearPayment();
     ClearWithdraw();
+    EnableBalance();
+    EnableWithdraw();
+    DisablePayment();
     PaymentScreen();
 }
 
@@ -55,6 +58,9 @@ void MainWindow::on_main_balance_button_clicked()
     ClearPayment();
     ClearWithdraw();
     BalanceScreen();
+    EnablePayment();
+    EnableWithdraw();
+    DisableBalance();
     SetBalance();
 }
 
@@ -62,6 +68,9 @@ void MainWindow::on_main_withdraw_button_clicked()
 {
     ClearPayment();
     ClearWithdraw();
+    EnablePayment();
+    EnableBalance();
+    DisableWithdraw();
     WithdrawScreen();
     SetBalance();
 }
@@ -206,59 +215,175 @@ void MainWindow::NumpadRandom()
 void MainWindow::on_login_mix_button_clicked()
 {
     NumpadRandom();
+    ui->login_mix_button->setEnabled(false);
+    ui->login_reset_button->setEnabled(true);
+    randomiser = true;
 }
 
 void MainWindow::on_login_reset_button_clicked()
 {
     ResetNumpad();
+    ui->login_mix_button->setEnabled(true);
+    ui->login_reset_button->setEnabled(false);
+    randomiser = false;
 }
 
 void MainWindow::on_login_numpad_button1_clicked()
 {
     ui->login_password_line->setText(ui->login_password_line->text() + "1");
+    ButtonMadness();
+    if(randomiser)
+    {
+        NumpadRandom();
+    }
 }
 
 void MainWindow::on_login_numpad_button2_clicked()
 {
     ui->login_password_line->setText(ui->login_password_line->text() + "2");
+    ButtonMadness();
+    if(randomiser)
+    {
+        NumpadRandom();
+    }
 }
 
 void MainWindow::on_login_numpad_button3_clicked()
 {
     ui->login_password_line->setText(ui->login_password_line->text() + "3");
+    ButtonMadness();
+    if(randomiser)
+    {
+        NumpadRandom();
+    }
 }
 
 void MainWindow::on_login_numpad_button4_clicked()
 {
     ui->login_password_line->setText(ui->login_password_line->text() + "4");
+    ButtonMadness();
+    if(randomiser)
+    {
+        NumpadRandom();
+    }
 }
 
 void MainWindow::on_login_numpad_button5_clicked()
 {
     ui->login_password_line->setText(ui->login_password_line->text() + "5");
+    ButtonMadness();
+    if(randomiser)
+    {
+        NumpadRandom();
+    }
 }
 
 void MainWindow::on_login_numpad_button6_clicked()
 {
     ui->login_password_line->setText(ui->login_password_line->text() + "6");
+    ButtonMadness();
+    if(randomiser)
+    {
+        NumpadRandom();
+    }
 }
 
 void MainWindow::on_login_numpad_button7_clicked()
 {
     ui->login_password_line->setText(ui->login_password_line->text() + "7");
+    ButtonMadness();
+    if(randomiser)
+    {
+        NumpadRandom();
+    }
 }
 
 void MainWindow::on_login_numpad_button8_clicked()
 {
     ui->login_password_line->setText(ui->login_password_line->text() + "8");
+    ButtonMadness();
+    if(randomiser)
+    {
+        NumpadRandom();
+    }
 }
 
 void MainWindow::on_login_numpad_button9_clicked()
 {
     ui->login_password_line->setText(ui->login_password_line->text() + "9");
+    ButtonMadness();
+    if(randomiser)
+    {
+        NumpadRandom();
+    }
 }
 
 void MainWindow::on_login_empty_button_clicked()
 {
     ui->login_password_line->setText("");
+    /*firstNumber = false;
+    secondNumber = false;
+    thirdNumber = false;
+    fourthNumber = false;*/
+}
+
+void MainWindow::EnableBalance()
+{
+    ui->main_balance_button->setEnabled(true);
+}
+
+void MainWindow::DisableBalance()
+{
+    ui->main_balance_button->setEnabled(false);
+}
+
+void MainWindow::EnablePayment()
+{
+    ui->main_payment_button->setEnabled(true);
+}
+
+void MainWindow::DisablePayment()
+{
+    ui->main_payment_button->setEnabled(false);
+}
+
+void MainWindow::EnableWithdraw()
+{
+    ui->main_withdraw_button->setEnabled(true);
+}
+
+void MainWindow::DisableWithdraw()
+{
+    ui->main_withdraw_button->setEnabled(false);
+}
+
+void MainWindow::ButtonMadness()
+{
+    QString str = "";
+    str.append(ui->login_password_line->text());
+
+    if(str.size() == 4)
+    {
+        on_login_login_button_clicked();
+    }else
+    {
+        str = "";
+    }
+    /*if(firstNumber && secondNumber && thirdNumber && !fourthNumber)
+    {
+        on_login_login_button_clicked();
+        firstNumber = false;
+        secondNumber = false;
+        thirdNumber = false;
+        fourthNumber = false;
+    }else if(firstNumber && secondNumber && !thirdNumber && !fourthNumber)
+    {
+        thirdNumber = true;
+    }else if(firstNumber && !secondNumber && !thirdNumber && !fourthNumber)
+    {
+        secondNumber = true;
+    }else if(!firstNumber && !secondNumber && !thirdNumber && !fourthNumber)
+    {
+        firstNumber = true;
+    }*/
 }
