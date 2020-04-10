@@ -8,6 +8,7 @@
 #include <vector>
 #include <QTime>
 #include <QTimer>
+#include <Qt>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -80,6 +81,10 @@ private slots:
     void on_login_numpad_button9_clicked();
 
     void on_login_empty_button_clicked();
+
+    void on_login_numpad_button0_clicked();
+
+    void on_main_logout_button_clicked();
 
 private:
     Ui::MainWindow *ui;

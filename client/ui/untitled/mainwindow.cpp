@@ -160,6 +160,7 @@ void MainWindow::LoginCheck()
 {
     if(login == true){
         MainScreen();
+        on_login_empty_button_clicked();
     }else
     {
         ErrorMessage();
@@ -182,11 +183,12 @@ void MainWindow::ResetNumpad()
     ui->gridLayout->addWidget(ui->login_numpad_button7, 2, 0);
     ui->gridLayout->addWidget(ui->login_numpad_button8, 2, 1);
     ui->gridLayout->addWidget(ui->login_numpad_button9, 2, 2);
+    ui->gridLayout->addWidget(ui->login_numpad_button0, 3, 1);
 }
 
 void MainWindow::NumpadRandom()
 {
-    int maxValue = 8;
+    int maxValue = 9;
     int randValue;
 
     vec.push_back(ui->login_numpad_button1);
@@ -198,6 +200,7 @@ void MainWindow::NumpadRandom()
     vec.push_back(ui->login_numpad_button7);
     vec.push_back(ui->login_numpad_button8);
     vec.push_back(ui->login_numpad_button9);
+    vec.push_back(ui->login_numpad_button0);
 
 
     for(int y = 0; y <= 2; y++)
@@ -210,6 +213,9 @@ void MainWindow::NumpadRandom()
             maxValue--;
         }
     }
+
+    ui->gridLayout->addWidget(vec[0], 3, 1);
+    vec.erase(vec.begin() + 0);
 }
 
 void MainWindow::on_login_mix_button_clicked()
@@ -318,6 +324,17 @@ void MainWindow::on_login_numpad_button9_clicked()
     }
 }
 
+void MainWindow::on_login_numpad_button0_clicked()
+{
+    ui->login_password_line->setText(ui->login_password_line->text() + "0");
+    ButtonMadness();
+    if(randomiser)
+    {
+        NumpadRandom();
+    }
+}
+
+
 void MainWindow::on_login_empty_button_clicked()
 {
     ui->login_password_line->setText("");
@@ -386,4 +403,15 @@ void MainWindow::ButtonMadness()
     {
         firstNumber = true;
     }*/
+}
+
+
+void MainWindow::on_main_logout_button_clicked()
+{
+    balanceAmmount = "0";
+    SetBalance();
+    ClearWithdraw();
+    ClearPayment();
+    MainScreen();
+    LoginScreen();
 }
