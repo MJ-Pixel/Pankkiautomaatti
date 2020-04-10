@@ -8,6 +8,7 @@
 #include <QString>
 #include <QSqlQuery>
 #include <QVector>
+#include <QtMath>
 
 using namespace std;
 

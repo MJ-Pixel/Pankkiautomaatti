@@ -4,7 +4,8 @@ bool connectToDb();
 - Returns true or false depending on if connection could be made or not
 
 bool login(QString cardid, QString pin);
-- Use DLLSarjaPortti::readCard() or insert card's TAG manually (0B0035CD90)
+- Use DLLSarjaPortti::readCard() or insert card's TAG manually ("0B0035CD90") and
+PIN-code ("0000")
 
 bool withdraw(double amount);
 - Returns true or false depending on if the withdraw could be made successfully

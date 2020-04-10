@@ -49,14 +49,14 @@ bool DLLMySQL::login(QString cardid, QString pin){
 
 bool DLLMySQL::withdraw(double amount){
     bool result = false;
-    if (QSqlDatabase::contains()){
+    if(fabs(amount - 0) != 0.0 && fabs(fmod(amount, 5)) == 0 && QSqlDatabase::contains()){
         QSqlDatabase db = QSqlDatabase::database("MyDbConnection");
         QSqlQuery query;
         query.prepare("SELECT saldo FROM tilitiedot WHERE user_id = ?");
         query.addBindValue(id);
         query.exec();
         query.first();
-        if (query.size() >= 0){
+        if (query.size() > 0){
             qDebug() << "Found user's balance in withdraw()";
             double balance = query.value(0).toDouble();
             if(amount > balance){
@@ -69,15 +69,9 @@ bool DLLMySQL::withdraw(double amount){
                 if(query.exec()){
                     query.prepare("INSERT INTO tilitapahtumat (user_id, tyyppi, nimi, iban, bicc, summa, viite, viesti) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
                     result = true;
-                } else {
-                    qDebug() << "Withdraw failed";
                 }
             }
-        } else if (query.size() == 0){
-            qDebug() << "Didn't find user's balance";
         }
-    } else {
-        qDebug() << "Couldn't connect to database";
     }
     return result;
 }
