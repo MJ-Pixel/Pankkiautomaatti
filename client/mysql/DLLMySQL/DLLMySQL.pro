@@ -13,5 +13,3 @@ SOURCES += \
 HEADERS += \
     DLLMySQL_global.h \
     dllmysql.h
-
-DESTDIR = "C:\BankSimul\exe"

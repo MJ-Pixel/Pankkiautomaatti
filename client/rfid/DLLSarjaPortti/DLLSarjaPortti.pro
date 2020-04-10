@@ -34,4 +34,3 @@ unix {
     INSTALLS += target
 }
 
-DESTDIR += C:\BankSimul\exe
