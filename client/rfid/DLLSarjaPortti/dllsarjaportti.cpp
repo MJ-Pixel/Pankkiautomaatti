@@ -44,8 +44,8 @@ void DLLSarjaPortti::writeData()
         {
             cardID = data;
         }
-        cardID.remove(0,3);
-       // cardID = cardID.trimmed();
+        cardID = cardID.simplified().remove(0,1).remove(11,1);
+
         qDebug () << "CardID:" << cardID << endl;
         emit readComplete(QString(cardID));
     }else{
