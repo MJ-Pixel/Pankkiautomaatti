@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QGridLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -26,7 +27,7 @@ void MainWindow::MainScreen()
 
 void MainWindow::PaymentScreen()
 {
-    ui->stackedWidget_2->setCurrentIndex(3);
+    ui->stackedWidget_2->setCurrentIndex(4);
 }
 
 void MainWindow::LoginScreen()
@@ -43,12 +44,26 @@ void MainWindow::WithdrawScreen()
 {
     ui->stackedWidget_2->setCurrentIndex(2);
 }
+void MainWindow::TransactionScreen()
+{
+    ui->stackedWidget_2->setCurrentIndex(3);
+
+    for(int i = 1; i < 11; i++)
+    {
+        AddTransaction(i, "15/12/2020", "Maksu", "FI00 0000 0000 0000", "1500€");       
+    }
+
+    transPrinted = true;
+
+}
 void MainWindow::on_main_payment_button_clicked()
 {
     ClearPayment();
     ClearWithdraw();
+    ClearTransaction();
     EnableBalance();
     EnableWithdraw();
+    EnableTransaction();
     DisablePayment();
     PaymentScreen();
 }
@@ -57,9 +72,11 @@ void MainWindow::on_main_balance_button_clicked()
 {
     ClearPayment();
     ClearWithdraw();
+    ClearTransaction();
     BalanceScreen();
     EnablePayment();
     EnableWithdraw();
+    EnableTransaction();
     DisableBalance();
     SetBalance();
 }
@@ -68,8 +85,10 @@ void MainWindow::on_main_withdraw_button_clicked()
 {
     ClearPayment();
     ClearWithdraw();
+    ClearTransaction();
     EnablePayment();
     EnableBalance();
+    EnableTransaction();
     DisableWithdraw();
     WithdrawScreen();
     SetBalance();
@@ -79,6 +98,11 @@ void MainWindow::on_main_transaction_button_clicked()
 {
     ClearPayment();
     ClearWithdraw();
+    EnablePayment();
+    EnableBalance();
+    EnableWithdraw();
+    DisableTransaction();
+    TransactionScreen();
 }
 
 void MainWindow::on_payment_confirm_button_clicked()
@@ -140,6 +164,22 @@ void MainWindow::ClearPayment()
 void MainWindow::ClearWithdraw()
 {
     ui->withdraw_ammount_line->setText("");
+}
+
+void MainWindow::ClearTransaction()
+{
+    if(transPrinted)
+    {
+        for(int i = 0; i < 40; i++)
+        {
+            QLayoutItem *x = ui->transaction_grid_layout->takeAt(4);
+
+            if (x->widget())
+                delete x->widget();
+        }
+        transPrinted = false;
+    }
+
 }
 
 void MainWindow::ErrorMessage()
@@ -374,6 +414,16 @@ void MainWindow::DisableWithdraw()
     ui->main_withdraw_button->setEnabled(false);
 }
 
+void MainWindow::EnableTransaction()
+{
+    ui->main_transaction_button->setEnabled(true);
+}
+
+void MainWindow::DisableTransaction()
+{
+    ui->main_transaction_button->setEnabled(false);
+}
+
 void MainWindow::ButtonMadness()
 {
     QString str = "";
@@ -414,4 +464,23 @@ void MainWindow::on_main_logout_button_clicked()
     ClearPayment();
     MainScreen();
     LoginScreen();
+}
+
+void MainWindow::AddTransaction(int row, QString time, QString type, QString accountNumber, QString sum)
+{
+    QFont f("MS Shell Dlg2", 11);
+    QLabel *label1 = new QLabel(time, this);
+    QLabel *label2 = new QLabel(type, this);
+    QLabel *label3 = new QLabel(accountNumber, this);
+    QLabel *label4 = new QLabel(sum, this);
+
+    label1 ->setFont(f);
+    label2 ->setFont(f);
+    label3 ->setFont(f);
+    label4 ->setFont(f);
+
+    ui->transaction_grid_layout->addWidget(label1, row, 0, Qt::AlignLeft);
+    ui->transaction_grid_layout->addWidget(label2, row, 1, Qt::AlignLeft);
+    ui->transaction_grid_layout->addWidget(label3, row, 2, Qt::AlignLeft);
+    ui->transaction_grid_layout->addWidget(label4, row, 3, Qt::AlignLeft);
 }

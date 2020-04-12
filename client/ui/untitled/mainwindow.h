@@ -30,12 +30,15 @@ public:
     void DisableBalance();
     void EnableWithdraw();
     void DisableWithdraw();
+    void EnableTransaction();
+    void DisableTransaction();
 
     void MainScreen(); //theese functions will chang the screen
     void PaymentScreen();
     void LoginScreen();
     void BalanceScreen();
     void WithdrawScreen();
+    void TransactionScreen();
     //Transactioniin voi luoda labeleita dynaamisesti seuraavanlailla
     //QLabel *label = new QLabel(<info>, this);
     int randInt(int low, int high);
@@ -97,7 +100,9 @@ private:
     void NumpadRandom();
     void ClearPayment();
     void ClearWithdraw();
+    void ClearTransaction();
     void ErrorMessage();
+    void AddTransaction(int row, QString time, QString type, QString accountNumber, QString sum);
 
     bool randomiser = false;
 
@@ -105,6 +110,8 @@ private:
     bool secondNumber = false;
     bool thirdNumber = false;
     bool fourthNumber = false;
+
+    bool transPrinted = false;
 
     QString balanceAmmount = "100";
     QVector<QWidget *> vec;
