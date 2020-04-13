@@ -68,7 +68,9 @@ bool DLLMySQL::withdraw(double amount){
                 query.addBindValue(id);
                 if(query.exec()){
                     query.prepare("INSERT INTO tilitapahtumat (user_id, tyyppi, nimi, iban, bicc, summa, viite, viesti) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                    result = true;
+                    if(query.exec()){
+                       result = true;
+                    }
                 }
             }
         }
