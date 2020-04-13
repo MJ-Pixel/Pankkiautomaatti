@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>592</width>
-    <height>587</height>
+    <width>675</width>
+    <height>553</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -191,12 +191,30 @@
                 </property>
                </spacer>
               </item>
+              <item>
+               <widget class="QPushButton" name="main_logout_button">
+                <property name="minimumSize">
+                 <size>
+                  <width>40</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>13</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>LogOut</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
             <item>
              <widget class="QStackedWidget" name="stackedWidget_2">
               <property name="currentIndex">
-               <number>2</number>
+               <number>4</number>
               </property>
               <widget class="QWidget" name="MainPage_2">
                <layout class="QGridLayout" name="gridLayout_6">
@@ -630,6 +648,149 @@
                 </item>
                </layout>
               </widget>
+              <widget class="QWidget" name="TransactionPage">
+               <layout class="QGridLayout" name="gridLayout_14">
+                <item row="1" column="1">
+                 <spacer name="verticalSpacer_13">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item row="1" column="2">
+                 <spacer name="horizontalSpacer_17">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item row="0" column="1">
+                 <layout class="QGridLayout" name="transaction_grid_layout">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="transaction_aika_label">
+                    <property name="minimumSize">
+                     <size>
+                      <width>85</width>
+                      <height>18</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>85</width>
+                      <height>18</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>11</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Aika</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLabel" name="transaction_tyyppi_label">
+                    <property name="minimumSize">
+                     <size>
+                      <width>85</width>
+                      <height>18</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>85</width>
+                      <height>18</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>11</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Tyyppi</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="2">
+                   <widget class="QLabel" name="transaction_tilininumero_label">
+                    <property name="minimumSize">
+                     <size>
+                      <width>85</width>
+                      <height>18</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>85</width>
+                      <height>18</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>11</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Tilinumero</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="3">
+                   <widget class="QLabel" name="transaction_summa_label">
+                    <property name="minimumSize">
+                     <size>
+                      <width>85</width>
+                      <height>18</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>85</width>
+                      <height>18</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>11</pointsize>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Summa</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="0">
+                 <spacer name="horizontalSpacer_18">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
               <widget class="QWidget" name="PaymentPage">
                <layout class="QGridLayout" name="gridLayout_12">
                 <item row="0" column="0">
@@ -975,139 +1136,6 @@
             <property name="spacing">
              <number>2</number>
             </property>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="login_numpad_button5">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>80</width>
-                <height>85</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>12</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>5</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="login_numpad_button1">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>80</width>
-                <height>85</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>12</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>1</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="login_numpad_button2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>80</width>
-                <height>85</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>12</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>2</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="login_numpad_button6">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>80</width>
-                <height>85</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>12</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>6</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QPushButton" name="login_numpad_button7">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>80</width>
-                <height>85</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>12</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>7</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <spacer name="verticalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
             <item row="0" column="2">
              <widget class="QPushButton" name="login_numpad_button3">
               <property name="sizePolicy">
@@ -1115,6 +1143,12 @@
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
               </property>
               <property name="maximumSize">
                <size>
@@ -1132,13 +1166,19 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="login_numpad_button4">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="login_numpad_button2">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
               </property>
               <property name="maximumSize">
                <size>
@@ -1152,7 +1192,7 @@
                </font>
               </property>
               <property name="text">
-               <string>4</string>
+               <string>2</string>
               </property>
              </widget>
             </item>
@@ -1163,6 +1203,12 @@
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
               </property>
               <property name="maximumSize">
                <size>
@@ -1180,6 +1226,139 @@
               </property>
              </widget>
             </item>
+            <item row="4" column="1">
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="3" column="1">
+             <widget class="QPushButton" name="login_numpad_button0">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="login_numpad_button5">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>5</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="login_numpad_button4">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>4</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="login_numpad_button1">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </widget>
+            </item>
             <item row="2" column="2">
              <widget class="QPushButton" name="login_numpad_button9">
               <property name="sizePolicy">
@@ -1187,6 +1366,12 @@
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
               </property>
               <property name="maximumSize">
                <size>
@@ -1204,6 +1389,66 @@
               </property>
              </widget>
             </item>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="login_numpad_button7">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>7</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="login_numpad_button6">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>6</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="3">
              <spacer name="horizontalSpacer_7">
               <property name="orientation">
@@ -1216,6 +1461,44 @@
                </size>
               </property>
              </spacer>
+            </item>
+            <item row="3" column="0">
+             <widget class="QPushButton" name="login_numpad_buttonEmpty1">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="QPushButton" name="login_numpad_buttonEmpty2">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>85</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -1455,14 +1738,13 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>592</width>
-     <height>26</height>
+     <width>675</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>

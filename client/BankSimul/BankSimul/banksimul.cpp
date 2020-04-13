@@ -44,6 +44,20 @@ bool BankSimul::withdraw(double amount)
     return db->withdraw(amount);
 }
 
-bool BankSimul::payment()
+bool BankSimul::payment(QString name, QString accnum, QString sum)
 {
+    DLLMySQL::PaymentInfo info;
+
+    info.type = 1;
+    info.bicc = "";
+    info.message = "Maksu";
+    info.name = name;
+    info.amount = sum.toDouble();
+    info.iban = accnum;
+
+    return db->payment(info);
+}
+
+QVector<QString> BankSimul::transactions(){
+    return db->events();
 }

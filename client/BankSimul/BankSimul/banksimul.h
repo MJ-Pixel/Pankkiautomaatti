@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QVector>
 #include <QTimer>
 #include "include/dllmysql.h"
 #include "include/dllsarjaportti.h"
@@ -18,7 +19,8 @@ public:
     void login(QString cardId, QString password);
     QString loadBalance();
     bool withdraw(double amount);
-    bool payment();
+    bool payment(QString name, QString accnum, QString sum);
+    QVector<QString> transactions();
 signals:
     void loginComplete(bool success);
     void readComplete(QString cardId);

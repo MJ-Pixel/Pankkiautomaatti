@@ -1,15 +1,17 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "banksimul.h"
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QCheckBox>
 #include <QDialog>
 #include <vector>
+#include <QVector>
 #include <QTime>
 #include <QTimer>
-#include <QDebug>
+#include <Qt>
+#include <QGridLayout>
+#include "banksimul.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,12 +33,15 @@ public:
     void DisableBalance();
     void EnableWithdraw();
     void DisableWithdraw();
+    void EnableTransaction();
+    void DisableTransaction();
 
     void MainScreen(); //theese functions will chang the screen
     void PaymentScreen();
     void LoginScreen();
     void BalanceScreen();
     void WithdrawScreen();
+    void TransactionScreen();
     //Transactioniin voi luoda labeleita dynaamisesti seuraavanlailla
     //QLabel *label = new QLabel(<info>, this);
     int randInt(int low, int high);
@@ -83,6 +88,10 @@ private slots:
 
     void on_login_empty_button_clicked();
 
+    void on_login_numpad_button0_clicked();
+
+    void on_main_logout_button_clicked();
+
 private:
     Ui::MainWindow *ui;
     QMessageBox msg;
@@ -94,10 +103,12 @@ private:
     void NumpadRandom();
     void ClearPayment();
     void ClearWithdraw();
+    void ClearTransaction();
     void ErrorMessage();
+    void AddTransaction(int row, QString time, QString type, QString accountNumber, QString sum);
 
     bool randomiser = false;
-
+    bool transPrinted = false;
     bool firstNumber = false;
     bool secondNumber = false;
     bool thirdNumber = false;
