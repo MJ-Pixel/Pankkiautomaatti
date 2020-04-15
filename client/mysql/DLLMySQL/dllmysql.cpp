@@ -52,13 +52,15 @@ bool DLLMySQL::withdraw(double amount){
     if(fabs(amount - 0) != 0.0 && fabs(fmod(amount, 5)) == 0 && QSqlDatabase::contains()){
         QSqlDatabase db = QSqlDatabase::database("MyDbConnection");
         QSqlQuery query;
-        query.prepare("SELECT saldo FROM tilitiedot WHERE user_id = ?");
+        query.prepare("SELECT user_first, user_last, saldo FROM tilitiedot WHERE user_id = ?");
         query.addBindValue(id);
         query.exec();
         query.first();
         if (query.size() > 0){
             qDebug() << "Found user's balance in withdraw()";
-            double balance = query.value(0).toDouble();
+            QString userFirst = query.value(0).toString();
+            QString userLast = query.value(1).toString();
+            double balance = query.value(3).toDouble();
             if(amount > balance){
                 qDebug() << "Not enough funds to complete withdraw";
             } else if (amount <= balance){
@@ -67,7 +69,11 @@ bool DLLMySQL::withdraw(double amount){
                 query.addBindValue(math);
                 query.addBindValue(id);
                 if(query.exec()){
-                    query.prepare("INSERT INTO tilitapahtumat (user_id, tyyppi, nimi, iban, bicc, summa, viite, viesti) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    query.prepare("INSERT INTO tilitapahtumat (user_id, tyyppi, nimi, summa) VALUES (?, ?, ?, ?)");
+                    query.addBindValue(id);
+                    query.addBindValue(2);
+                    query.addBindValue(userFirst + " " + userLast);
+                    query.addBindValue(amount);
                     if(query.exec()){
                        result = true;
                     }
@@ -167,6 +173,8 @@ QVector<QString> DLLMySQL::events(){
         while(query.next()){
             for(int i = 0; i < rec.count(); i++){
                 deb << query.value(i).toString();
+                QString str = query.value(i).toString();
+                str = str.replace("T", "-");
                 stringVector.append(query.value(i).toString());
                 if(i != 0 && i % 9 == 0){
                     deb << endl;
