@@ -61,11 +61,11 @@ void MainWindow::TransactionScreen()
         QString date = QString(event.next());
         QString type = QString(event.next());
         if(type == "1"){
-            type = "Maksu";
+            type = "Payment";
         }else if(type == "2"){
-            type = "Nosto";
+            type = "Withdraw";
         }else if(type == "3"){
-            type = "Pano";
+            type = "Deposit";
         }
         QString name = QString(event.next());
         QString iban = QString(event.next());
@@ -161,8 +161,9 @@ void MainWindow::on_payment_confirm_button_clicked()
     QString accnumValue = ui->payment_accnum_line->text();
     QString sumValue = ui->payment_sum_line->text();
 
-    QAbstractButton *noButton = msg.addButton(tr("no"), QMessageBox::ActionRole);
-    QAbstractButton *confirmButton = msg.addButton(tr("confirm"), QMessageBox::ActionRole);
+    QAbstractButton *confirmButton = msg.addButton(tr("Confirm"), QMessageBox::ActionRole);
+    QAbstractButton *noButton = msg.addButton(tr("Cancel"), QMessageBox::ActionRole);
+
     QString str = QString("Are you sure?\nName: %1\nAccount number: %2\nSum: %3").arg(nameValue).arg(accnumValue).arg(sumValue);
     msg.setText(str);
     msg.exec();
@@ -178,6 +179,8 @@ void MainWindow::on_payment_confirm_button_clicked()
                 balanceAmmount = atm->loadBalance();
                 SetBalance();
                 MainScreen();
+                EnablePayment();
+                EnableWithdraw();
             }else{
                 ErrorMessage();
             }
@@ -199,8 +202,9 @@ void MainWindow::on_withdraw_confirm_button_clicked()
 
     QString newBalance = QString::number(newBalanceDouble);
 
-    QAbstractButton *noButton = msg.addButton(tr("no"), QMessageBox::ActionRole);
-    QAbstractButton *confirmButton = msg.addButton(tr("confirm"), QMessageBox::ActionRole);
+    QAbstractButton *confirmButton = msg.addButton(tr("Confirm"), QMessageBox::ActionRole);
+    QAbstractButton *noButton = msg.addButton(tr("Cancel"), QMessageBox::ActionRole);
+
     QString str = QString("Are you sure?\nNew balance: %1 €").arg(newBalance);
     msg.setText(str);
     msg.exec();
@@ -213,6 +217,8 @@ void MainWindow::on_withdraw_confirm_button_clicked()
             balanceAmmount = atm->loadBalance();
             SetBalance();
             MainScreen();
+            EnablePayment();
+            EnableWithdraw();
         }else{
             ErrorMessage();
         }
@@ -225,9 +231,9 @@ void MainWindow::on_withdraw_confirm_button_clicked()
 
 void MainWindow::SetBalance()
 {
-    ui->balance_ammount_label->setText(balanceAmmount);
-    ui->balance_ammount_label_2->setText(balanceAmmount);
-    ui->withdraw_ammount_label_2->setText(balanceAmmount);
+    ui->balance_ammount_label->setText(balanceAmmount+" €");
+    ui->balance_ammount_label_2->setText(balanceAmmount+" €");
+    ui->withdraw_ammount_label_2->setText(balanceAmmount+" €");
 }
 
 void MainWindow::ClearPayment()

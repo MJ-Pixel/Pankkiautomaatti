@@ -18,7 +18,7 @@ BankSimul::BankSimul(QObject *parent) : QObject(parent)
     QObject::connect(timer, QTimer::timeout, [this](){
         emit this->readComplete("0B0035CD90");
     });
-    timer->setInterval(3000);
+    timer->setInterval(5000);
     timer->setSingleShot(true);
     timer->start();
 

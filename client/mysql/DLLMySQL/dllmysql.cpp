@@ -60,7 +60,7 @@ bool DLLMySQL::withdraw(double amount){
             qDebug() << "Found user's balance in withdraw()";
             QString userFirst = query.value(0).toString();
             QString userLast = query.value(1).toString();
-            double balance = query.value(3).toDouble();
+            double balance = query.value(2).toDouble();
             if(amount > balance){
                 qDebug() << "Not enough funds to complete withdraw";
             } else if (amount <= balance){
@@ -69,11 +69,11 @@ bool DLLMySQL::withdraw(double amount){
                 query.addBindValue(math);
                 query.addBindValue(id);
                 if(query.exec()){
-                    query.prepare("INSERT INTO tilitapahtumat (user_id, tyyppi, nimi, summa) VALUES (?, ?, ?, ?)");
-                    query.addBindValue(id);
-                    query.addBindValue(2);
-                    query.addBindValue(userFirst + " " + userLast);
-                    query.addBindValue(amount);
+                    query.prepare("INSERT INTO tilitapahtumat (user_id, tyyppi, nimi, summa) VALUES (:id, :type, :name, :sum)");
+                    query.bindValue(":id", id);
+                    query.bindValue(":type", 2);
+                    query.bindValue(":name", "'"+userFirst + " " + userLast+"'");
+                    query.bindValue(":sum", amount);
                     if(query.exec()){
                        result = true;
                     }
