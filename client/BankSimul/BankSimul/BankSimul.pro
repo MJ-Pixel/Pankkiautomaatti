@@ -10,8 +10,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = BankSimul
 TEMPLATE = app
-LIBS += "C:\Qt-harjoitukset\Pankkiautomaatti\client\BankSimul\BankSimul\bin\DLLMySQL.dll"
-LIBS += "C:\Qt-harjoitukset\Pankkiautomaatti\client\BankSimul\BankSimul\bin\DLLSarjaPortti.dll"
+LIBS += "C:\BankSimul\Pankkiautomaatti\client\BankSimul\BankSimul\release\DLLMySQL.dll"
+LIBS += "C:\BankSimul\Pankkiautomaatti\client\BankSimul\BankSimul\release\DLLSarjaPortti.dll"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
