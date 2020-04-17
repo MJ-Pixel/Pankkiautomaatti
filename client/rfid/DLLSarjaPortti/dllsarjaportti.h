@@ -17,7 +17,7 @@ public:
     static QString DLLSARJAPORTTISHARED_EXPORT simulateCard();
 private:
     QString cardID;
-    QString returnCardID;
+   // QString returnCardID;
     QSerialPort *serial;
 signals:
     void DLLSARJAPORTTISHARED_EXPORT readComplete(QString id);
