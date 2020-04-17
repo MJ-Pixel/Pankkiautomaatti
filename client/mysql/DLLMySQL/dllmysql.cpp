@@ -72,7 +72,7 @@ bool DLLMySQL::withdraw(double amount){
                     query.prepare("INSERT INTO tilitapahtumat (user_id, tyyppi, nimi, summa) VALUES (?, ?, ?, ?)");
                     query.addBindValue(id);
                     query.addBindValue(2);
-                    query.addBindValue(userFirst + " " + userLast);
+                    query.addBindValue("'" + userFirst + " " + userLast + "'");
                     query.addBindValue(amount);
                     if(query.exec()){
                        result = true;
@@ -174,8 +174,10 @@ QVector<QString> DLLMySQL::events(){
             for(int i = 0; i < rec.count(); i++){
                 deb << query.value(i).toString();
                 QString str = query.value(i).toString();
-                str = str.replace("T", "-");
-                stringVector.append(query.value(i).toString());
+                if(str.contains("T")){
+                    str = str.replace("T", "-");
+                }
+                stringVector.append(str);
                 if(i != 0 && i % 9 == 0){
                     deb << endl;
                 }
