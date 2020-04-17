@@ -1,6 +1,7 @@
 #include "dllmysql.h"
 
 int DLLMySQL::id = 0;
+double DLLMySQL::minValue = 0.0;
 
 bool DLLMySQL::connectToDb(){
     bool result = false;
@@ -60,8 +61,8 @@ bool DLLMySQL::withdraw(double amount){
             qDebug() << "Found user's balance in withdraw()";
             QString userFirst = query.value(0).toString();
             QString userLast = query.value(1).toString();
-            double balance = query.value(3).toDouble();
-            if(amount > balance){
+            double balance = query.value(2).toDouble();
+            if(amount <= minValue || amount > balance){
                 qDebug() << "Not enough funds to complete withdraw";
             } else if (amount <= balance){
                 double math = balance - amount;
@@ -99,7 +100,7 @@ bool DLLMySQL::payment(DLLMySQL::PaymentInfo info){
         if (query.size() >= 0){
             qDebug() << "Found user's balance in payment()";
             double balance = query.value(0).toDouble();
-            if(info.amount > balance){
+            if(info.amount <= minValue || info.amount > balance){
                 qDebug() << "Not enough funds to complete payment";
             } else if (info.amount <= balance){
                 double math = balance - info.amount;

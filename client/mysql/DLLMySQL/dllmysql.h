@@ -36,6 +36,7 @@ public:
 
 private:
     static int id;
+    static double minValue;
 };
 
 #endif // DLLMYSQL_H
