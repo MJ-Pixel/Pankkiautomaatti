@@ -1,6 +1,7 @@
 #include "dllmysql.h"
 
 int DLLMySQL::id = 0;
+double DLLMySQL::minValue = 0.0;
 
 bool DLLMySQL::connectToDb(){
     bool result = false;
@@ -61,7 +62,8 @@ bool DLLMySQL::withdraw(double amount){
             QString userFirst = query.value(0).toString();
             QString userLast = query.value(1).toString();
             double balance = query.value(2).toDouble();
-            if(amount > balance){
+
+            if(amount <= minValue || amount > balance){
                 qDebug() << "Not enough funds to complete withdraw";
             } else if (amount <= balance){
                 double math = balance - amount;
@@ -69,11 +71,12 @@ bool DLLMySQL::withdraw(double amount){
                 query.addBindValue(math);
                 query.addBindValue(id);
                 if(query.exec()){
-                    query.prepare("INSERT INTO tilitapahtumat (user_id, tyyppi, nimi, summa) VALUES (:id, :type, :name, :sum)");
-                    query.bindValue(":id", id);
-                    query.bindValue(":type", 2);
-                    query.bindValue(":name", "'"+userFirst + " " + userLast+"'");
-                    query.bindValue(":sum", amount);
+                    query.prepare("INSERT INTO tilitapahtumat (user_id, tyyppi, nimi, summa) VALUES (?, ?, ?, ?)");
+                    query.addBindValue(id);
+                    query.addBindValue(2);
+                    query.addBindValue("'" + userFirst + " " + userLast + "'");
+                    query.addBindValue(amount);
+
                     if(query.exec()){
                        result = true;
                     }
@@ -99,7 +102,7 @@ bool DLLMySQL::payment(DLLMySQL::PaymentInfo info){
         if (query.size() >= 0){
             qDebug() << "Found user's balance in payment()";
             double balance = query.value(0).toDouble();
-            if(info.amount > balance){
+            if(info.amount <= minValue || info.amount > balance){
                 qDebug() << "Not enough funds to complete payment";
             } else if (info.amount <= balance){
                 double math = balance - info.amount;
@@ -174,8 +177,10 @@ QVector<QString> DLLMySQL::events(){
             for(int i = 0; i < rec.count(); i++){
                 deb << query.value(i).toString();
                 QString str = query.value(i).toString();
-                str = str.replace("T", "-");
-                stringVector.append(query.value(i).toString());
+                if(str.contains("T")){
+                    str = str.replace("T", "-");
+                }
+                stringVector.append(str);
                 if(i != 0 && i % 9 == 0){
                     deb << endl;
                 }
