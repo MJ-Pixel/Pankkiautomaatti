@@ -105,6 +105,7 @@ private:
     void ClearWithdraw();
     void ClearTransaction();
     void ErrorMessage();
+    void Message(QString msg);
     void AddTransaction(int row, QString time, QString type, QString accountNumber, QString sum);
 
     bool randomiser = false;

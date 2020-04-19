@@ -174,7 +174,6 @@ void MainWindow::on_payment_confirm_button_clicked()
 
         if(nameValue != "" && accnumValue != "" && sumValue != ""){
 
-
             if(atm->payment(nameValue, accnumValue, sumValue)){
                 balanceAmmount = atm->loadBalance();
                 SetBalance();
@@ -182,10 +181,10 @@ void MainWindow::on_payment_confirm_button_clicked()
                 EnablePayment();
                 EnableWithdraw();
             }else{
-                ErrorMessage();
+                Message("There was an error with your payment, please try again.");
             }
         }else{
-            ErrorMessage();
+            Message("There was an error with your payment, please try again.");
         }
     }else if(msg.clickedButton() == noButton){
         msg.removeButton(noButton);
@@ -220,7 +219,7 @@ void MainWindow::on_withdraw_confirm_button_clicked()
             EnablePayment();
             EnableWithdraw();
         }else{
-            ErrorMessage();
+            Message("There was an error with your withdraw, please try again.");
         }
 
     }else if(msg.clickedButton() == noButton){
@@ -252,6 +251,10 @@ void MainWindow::ErrorMessage()
 {
     msg.critical(this,tr("Wrong Password!"), tr("Wrong Password!"));
     ui->login_password_line->setText("");
+}
+
+void MainWindow::Message(QString msg){
+    this->msg.critical(this, "Error", msg);
 }
 
 void MainWindow::on_login_login_button_clicked()
@@ -561,5 +564,10 @@ void MainWindow::on_main_logout_button_clicked()
     ClearWithdraw();
     ClearPayment();
     MainScreen();
+    EnablePayment();
+    EnableBalance();
+    EnableWithdraw();
+    EnableTransaction();
     LoginScreen();
+    this->ui->login_username_line->setText("");
 }
