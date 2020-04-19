@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>BankSimul</string>
+   <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -203,7 +203,7 @@
                </font>
               </property>
               <property name="text">
-               <string>Logout</string>
+               <string>LogOut</string>
               </property>
              </widget>
             </item>
@@ -620,7 +620,7 @@
                      </font>
                     </property>
                     <property name="text">
-                     <string>Amount:</string>
+                     <string>ammount:</string>
                     </property>
                    </widget>
                   </item>
@@ -757,7 +757,7 @@
                    </font>
                   </property>
                   <property name="text">
-                   <string>Date</string>
+                   <string>Aika</string>
                   </property>
                  </widget>
                 </item>
@@ -781,7 +781,7 @@
                    </font>
                   </property>
                   <property name="text">
-                   <string>Type</string>
+                   <string>Tyyppi</string>
                   </property>
                  </widget>
                 </item>
@@ -805,7 +805,7 @@
                    </font>
                   </property>
                   <property name="text">
-                   <string>IBAN</string>
+                   <string>Tilinumero</string>
                   </property>
                  </widget>
                 </item>
@@ -829,7 +829,7 @@
                    </font>
                   </property>
                   <property name="text">
-                   <string>Amount</string>
+                   <string>Summa</string>
                   </property>
                  </widget>
                 </item>
@@ -897,7 +897,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Sum:</string>
+                   <string>sum:</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1820,7 +1820,7 @@
      <x>0</x>
      <y>0</y>
      <width>864</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

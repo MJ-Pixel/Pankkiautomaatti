@@ -62,6 +62,7 @@ bool DLLMySQL::withdraw(double amount){
             QString userFirst = query.value(0).toString();
             QString userLast = query.value(1).toString();
             double balance = query.value(2).toDouble();
+
             if(amount <= minValue || amount > balance){
                 qDebug() << "Not enough funds to complete withdraw";
             } else if (amount <= balance){
@@ -75,6 +76,7 @@ bool DLLMySQL::withdraw(double amount){
                     query.addBindValue(2);
                     query.addBindValue("'" + userFirst + " " + userLast + "'");
                     query.addBindValue(amount);
+
                     if(query.exec()){
                        result = true;
                     }

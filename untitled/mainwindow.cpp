@@ -1,34 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include <QGridLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    // creating object for logic handler
-    atm = new BankSimul(this);
-
-    // connecting signals to ui
-    QObject::connect(atm, &BankSimul::readComplete, [this](QString cardId){
-        this->ui->login_username_line->setText(cardId);
-    });
-
-    QObject::connect(atm, &BankSimul::loginComplete, [this](bool success){
-        if(success){
-            this->login = true;
-
-            balanceAmmount = atm->loadBalance();
-            SetBalance();
-
-            this->LoginCheck();
-        }else{
-            this->ErrorMessage();
-        }
-    });
-
     QTime time = QTime::currentTime();
     qsrand((uint)time.msec());
     LoginScreen();
@@ -47,50 +25,10 @@ void MainWindow::MainScreen()
     ui->stackedWidget_2->setCurrentIndex(0);
 }
 
-
-void MainWindow::TransactionScreen()
-{
-    ui->stackedWidget_2->setCurrentIndex(3);
-
-    QVector<QString> transactions = atm->transactions();
-    QVectorIterator<QString> event(transactions);
-    int row = 1;
-    while(event.hasNext()){
-        QString userid = QString(event.next());
-        QString eventid = QString(event.next());
-        QString date = QString(event.next());
-        QString type = QString(event.next());
-        if(type == "1"){
-            type = "Payment";
-        }else if(type == "2"){
-            type = "Withdraw";
-        }else if(type == "3"){
-            type = "Deposit";
-        }
-        QString name = QString(event.next());
-        QString iban = QString(event.next());
-        QString bicc = QString(event.next());
-        QString sum = QString(event.next());
-        QString viite = QString(event.next());
-        QString msg = QString(event.next());
-
-        AddTransaction(row, date, type, iban, sum+"€");
-        row++;
-    }
-
-    /*for(int i = 1; i < 11; i++)
-    {
-        AddTransaction(i, "15/12/2020", "Maksu", "FI00 0000 0000 0000", "1500€");
-    }*/
-
-    transPrinted = true;
-}
-
 void MainWindow::PaymentScreen()
 {
     ui->stackedWidget_2->setCurrentIndex(4);
 }
-
 
 void MainWindow::LoginScreen()
 {
@@ -105,6 +43,18 @@ void MainWindow::BalanceScreen()
 void MainWindow::WithdrawScreen()
 {
     ui->stackedWidget_2->setCurrentIndex(2);
+}
+void MainWindow::TransactionScreen()
+{
+    ui->stackedWidget_2->setCurrentIndex(3);
+
+    for(int i = 1; i < 11; i++)
+    {
+        AddTransaction(i, "15.12.2020", "Maksu", "FI00 0000 0000 0000", "1500€");
+    }
+
+    transPrinted = true;
+
 }
 void MainWindow::on_main_payment_button_clicked()
 {
@@ -135,12 +85,12 @@ void MainWindow::on_main_withdraw_button_clicked()
 {
     ClearPayment();
     ClearWithdraw();
-    EnablePayment();
     ClearTransaction();
+    EnablePayment();
     EnableBalance();
+    EnableTransaction();
     DisableWithdraw();
     WithdrawScreen();
-    EnableTransaction();
     SetBalance();
 }
 
@@ -149,10 +99,10 @@ void MainWindow::on_main_transaction_button_clicked()
     ClearPayment();
     ClearWithdraw();
     EnablePayment();
-   EnableBalance();
-   EnableWithdraw();
-   DisableTransaction();
-   TransactionScreen();
+    EnableBalance();
+    EnableWithdraw();
+    DisableTransaction();
+    TransactionScreen();
 }
 
 void MainWindow::on_payment_confirm_button_clicked()
@@ -161,9 +111,8 @@ void MainWindow::on_payment_confirm_button_clicked()
     QString accnumValue = ui->payment_accnum_line->text();
     QString sumValue = ui->payment_sum_line->text();
 
-    QAbstractButton *confirmButton = msg.addButton(tr("Confirm"), QMessageBox::ActionRole);
-    QAbstractButton *noButton = msg.addButton(tr("Cancel"), QMessageBox::ActionRole);
-
+    QAbstractButton *confirmButton = msg.addButton(tr("confirm"), QMessageBox::ActionRole);
+    QAbstractButton *noButton = msg.addButton(tr("no"), QMessageBox::ActionRole);   
     QString str = QString("Are you sure?\nName: %1\nAccount number: %2\nSum: %3").arg(nameValue).arg(accnumValue).arg(sumValue);
     msg.setText(str);
     msg.exec();
@@ -171,22 +120,9 @@ void MainWindow::on_payment_confirm_button_clicked()
     if(msg.clickedButton() == confirmButton){
         msg.removeButton(noButton);
         msg.removeButton(confirmButton);
-
-        if(nameValue != "" && accnumValue != "" && sumValue != ""){
-
-
-            if(atm->payment(nameValue, accnumValue, sumValue)){
-                balanceAmmount = atm->loadBalance();
-                SetBalance();
-                MainScreen();
-                EnablePayment();
-                EnableWithdraw();
-            }else{
-                ErrorMessage();
-            }
-        }else{
-            ErrorMessage();
-        }
+        MainScreen();
+        EnablePayment();
+        EnableWithdraw();
     }else if(msg.clickedButton() == noButton){
         msg.removeButton(noButton);
         msg.removeButton(confirmButton);
@@ -196,33 +132,19 @@ void MainWindow::on_payment_confirm_button_clicked()
 void MainWindow::on_withdraw_confirm_button_clicked()
 {
 
-    double currentBalance = balanceAmmount.toDouble();
-    double withdrawAmount = QString(ui->withdraw_ammount_line->text()).toDouble();
-    double newBalanceDouble = currentBalance - withdrawAmount;
-
-    QString newBalance = QString::number(newBalanceDouble);
-
-    QAbstractButton *confirmButton = msg.addButton(tr("Confirm"), QMessageBox::ActionRole);
-    QAbstractButton *noButton = msg.addButton(tr("Cancel"), QMessageBox::ActionRole);
-
-    QString str = QString("Are you sure?\nNew balance: %1 €").arg(newBalance);
+    QString newBalance;
+    QAbstractButton *confirmButton = msg.addButton(tr("confirm"), QMessageBox::ActionRole);
+    QAbstractButton *noButton = msg.addButton(tr("no"), QMessageBox::ActionRole);
+    QString str = QString("Are you sure?\nNew balance: %1").arg(newBalance);
     msg.setText(str);
     msg.exec();
 
     if(msg.clickedButton() == confirmButton){
         msg.removeButton(noButton);
         msg.removeButton(confirmButton);
-
-        if(atm->withdraw(QString(ui->withdraw_ammount_line->text()).toDouble())){
-            balanceAmmount = atm->loadBalance();
-            SetBalance();
-            MainScreen();
-            EnablePayment();
-            EnableWithdraw();
-        }else{
-            ErrorMessage();
-        }
-
+        MainScreen();
+        EnablePayment();
+        EnableWithdraw();
     }else if(msg.clickedButton() == noButton){
         msg.removeButton(noButton);
         msg.removeButton(confirmButton);
@@ -231,9 +153,9 @@ void MainWindow::on_withdraw_confirm_button_clicked()
 
 void MainWindow::SetBalance()
 {
-    ui->balance_ammount_label->setText(balanceAmmount+" €");
-    ui->balance_ammount_label_2->setText(balanceAmmount+" €");
-    ui->withdraw_ammount_label_2->setText(balanceAmmount+" €");
+    ui->balance_ammount_label->setText(balanceAmmount);
+    ui->balance_ammount_label_2->setText(balanceAmmount);
+    ui->withdraw_ammount_label_2->setText(balanceAmmount);
 }
 
 void MainWindow::ClearPayment()
@@ -246,17 +168,6 @@ void MainWindow::ClearPayment()
 void MainWindow::ClearWithdraw()
 {
     ui->withdraw_ammount_line->setText("");
-}
-
-void MainWindow::ErrorMessage()
-{
-    msg.critical(this,tr("Wrong Password!"), tr("Wrong Password!"));
-    ui->login_password_line->setText("");
-}
-
-void MainWindow::on_login_login_button_clicked()
-{
-    atm->login(ui->login_username_line->text(), ui->login_password_line->text());
 }
 
 void MainWindow::ClearTransaction()
@@ -275,33 +186,18 @@ void MainWindow::ClearTransaction()
 
 }
 
-void MainWindow::AddTransaction(int row, QString time, QString type, QString accountNumber, QString sum)
+void MainWindow::ErrorMessage()
 {
-    QFont f("MS Shell Dlg2", 11);
-    QLabel *label1 = new QLabel(time, this);
-    QLabel *label2 = new QLabel(type, this);
-    QLabel *label3 = new QLabel(accountNumber, this);
-    QLabel *label4 = new QLabel(sum, this);
-
-    label1 ->setFont(f);
-    label2 ->setFont(f);
-    label3 ->setFont(f);
-    label4 ->setFont(f);
-
-    ui->transaction_grid_layout->addWidget(label1, row, 0, Qt::AlignLeft);
-    ui->transaction_grid_layout->addWidget(label2, row, 1, Qt::AlignLeft);
-    ui->transaction_grid_layout->addWidget(label3, row, 2, Qt::AlignLeft);
-    ui->transaction_grid_layout->addWidget(label4, row, 3, Qt::AlignLeft);
+    msg.critical(this,tr("Wrong Password!"), tr("Wrong Password!"));
+    ui->login_password_line->setText("");
 }
-
-void MainWindow::EnableTransaction()
+void MainWindow::on_login_login_button_clicked()
 {
-    ui->main_transaction_button->setEnabled(true);
-}
-
-void MainWindow::DisableTransaction()
-{
-    ui->main_transaction_button->setEnabled(false);
+    if(ui->login_password_line->text() == "1234")
+    {
+        login=true;
+    }
+    LoginCheck();
 }
 
 void MainWindow::LoginCheck()
@@ -522,6 +418,16 @@ void MainWindow::DisableWithdraw()
     ui->main_withdraw_button->setEnabled(false);
 }
 
+void MainWindow::EnableTransaction()
+{
+    ui->main_transaction_button->setEnabled(true);
+}
+
+void MainWindow::DisableTransaction()
+{
+    ui->main_transaction_button->setEnabled(false);
+}
+
 void MainWindow::ButtonMadness()
 {
     QString str = "";
@@ -562,4 +468,23 @@ void MainWindow::on_main_logout_button_clicked()
     ClearPayment();
     MainScreen();
     LoginScreen();
+}
+
+void MainWindow::AddTransaction(int row, QString time, QString type, QString accountNumber, QString sum)
+{
+    QFont f("MS Shell Dlg2", 11);
+    QLabel *label1 = new QLabel(time, this);
+    QLabel *label2 = new QLabel(type, this);
+    QLabel *label3 = new QLabel(accountNumber, this);
+    QLabel *label4 = new QLabel(sum, this);
+
+    label1 ->setFont(f);
+    label2 ->setFont(f);
+    label3 ->setFont(f);
+    label4 ->setFont(f);
+
+    ui->transaction_grid_layout->addWidget(label1, row, 0, Qt::AlignLeft);
+    ui->transaction_grid_layout->addWidget(label2, row, 1, Qt::AlignLeft);
+    ui->transaction_grid_layout->addWidget(label3, row, 2, Qt::AlignLeft);
+    ui->transaction_grid_layout->addWidget(label4, row, 3, Qt::AlignLeft);
 }
